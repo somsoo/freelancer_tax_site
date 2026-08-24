@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="index, follow">
+    <title>프리랜서 3.3% 세금 및 실수령액 계산기</title>
+    <meta name="description" content="프리랜서, 알바, N잡러를 위한 3.3% 세금(사업소득) 및 8.8%(기타소득) 공제 후 실수령액을 빠르고 정확하게 계산합니다.">
+    <meta name="keywords" content="3.3% 계산기, 프리랜서 세금 계산기, 실수령액 계산기, 기타소득 8.8%, 세후 금액 계산">
+    <link rel="canonical" href="https://tax-33.enjoy-onepage.com/">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="프리랜서 3.3% 세금 계산기">
+    <meta property="og:description" content="프리랜서 알바 세금 떼고 내 통장에 얼마 들어올까?">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tax-33.enjoy-onepage.com/">
+    <meta property="og:image" content="https://tax-33.enjoy-onepage.com/og-image.png">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "프리랜서 3.3% 세금 계산기",
+      "url": "https://tax-33.enjoy-onepage.com/",
+      "description": "프리랜서 및 N잡러의 3.3% 사업소득, 8.8% 기타소득 원천징수 세금과 실수령액을 계산합니다.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All"
+    }
+    </script>
+    
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js" integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0W/3Ith/aP28h2XznbnQhTtcW76S6Gv2Z/E3Q" crossorigin="anonymous"></script>
+    <script>const KAKAO_APP_KEY = '06a673cad6aa6c08aa453b311cea75da';</script>
+
+    <style>
+        :root {
+            --primary: #3F51B5;
+            --primary-light: #E8EAF6;
+            --secondary: #5C6BC0;
+            --bg: #F4F7F6;
+            --text: #2C3E50;
+            --light: #7F8C8D;
+            --border: #C5CAE9;
+            --box: #FFFFFF;
+            --highlight: #FF4081;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 75px;
+        }
+        .container {
+            margin: 0 auto;
+            max-width: 500px;
+            width: 100%;
+            min-height: 100vh;
+            background: var(--box);
+            padding: 20px 20px 40px;
+            box-shadow: 0 0 20px rgba(63, 81, 181, 0.08);
+        }
+
+        .header { text-align: center; margin-bottom: 25px; padding-top: 10px; }
+        .header h1 { font-size: 1.45rem; margin: 0 0 8px; color: var(--text); line-height: 1.3; word-break: keep-all; }
+        .header p { font-size: 0.85rem; color: var(--light); margin: 0; line-height: 1.5; word-break: keep-all; }
+        .badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; margin-bottom: 10px; }
+
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+        .input-wrapper { position: relative; }
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #FAFAFC;
+            transition: border-color 0.2s;
+        }
+        .input-wrapper input:focus { outline: none; border-color: var(--primary); background: #fff; }
+        .help-text { font-size: 0.75rem; color: var(--light); margin-top: 5px; margin-bottom: 0; }
+
+        .toggle-group { display: flex; gap: 10px; margin-bottom: 8px; }
+        .toggle-btn { flex: 1; padding: 12px; text-align: center; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; color: var(--light); font-weight: bold; background: #fff; transition: 0.2s; font-size: 0.9rem; }
+        .toggle-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+        .btn-calc {
+            width: 100%; padding: 16px; background: var(--primary); color: #fff; border: none;
+            border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(63, 81, 181, 0.2); transition: transform 0.1s, background 0.2s;
+            margin-top: 10px;
+        }
+        .btn-calc:active { transform: scale(0.98); }
+
+        .result-box {
+            display: none; background: #fff; border: 2px solid var(--primary); border-radius: 16px;
+            padding: 24px; margin-top: 25px; box-shadow: 0 10px 30px rgba(63, 81, 181, 0.1);
+        }
+        .result-box.active { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .res-header { text-align: center; margin-bottom: 20px; }
+        .res-header h2 { margin: 0; font-size: 1.2rem; color: var(--primary); }
+        .res-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--border); }
+        .res-row:last-child { border-bottom: none; }
+        .res-label { font-size: 0.9rem; color: var(--light); font-weight: 500; }
+        .res-val { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+        .val-highlight { color: var(--highlight); font-size: 1.4rem; }
+
+        .alert-box { background: var(--primary-light); padding: 14px; border-radius: 10px; margin-top: 20px; font-size: 0.82rem; line-height: 1.6; color: var(--text); }
+        .alert-box strong { color: var(--primary); }
+
+        .ad-box { width: 100%; min-height: 90px; margin: 20px 0; background: var(--box); text-align: center; overflow: hidden; border-radius: 12px; }
+        .sticky-ad { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; max-height: 60px; overflow: hidden; background: #fff; border-top: 1px solid #e0e0e0; z-index: 9999; text-align: center; }
+
+        .action-btns { display: flex; gap: 10px; margin-top: 20px; }
+        .action-btns button { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+        .btn-share { background: #FEE500; color: #000; }
+        .btn-reset { background: var(--bg); color: var(--light); border: 1px solid var(--border); }
+
+        .guides-section { display: none; margin-top: 30px; }
+        .guides-section h3 { font-size: 1.1rem; margin-bottom: 15px; }
+        .guide-cards { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .g-card { padding: 16px; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); display: flex; align-items: center; gap: 12px; transition: transform 0.2s; }
+        .g-card:hover { transform: translateY(-2px); border-color: var(--primary); }
+        .g-card-icon { font-size: 1.5rem; }
+        .g-card-text h4 { margin: 0 0 4px; font-size: 0.95rem; }
+        .g-card-text p { margin: 0; font-size: 0.75rem; color: var(--light); }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="badge">최신 세법 기준 완벽 적용</div>
+        <h1>프리랜서 세금/실수령액 계산기</h1>
+        <p>알바, N잡, 프리랜서 소득 공제 후<br>내 통장에 꽂히는 진짜 금액은 얼마일까?</p>
+    </div>
+
+    <!-- 폼 -->
+    <div class="input-group">
+        <label>소득 종류 선택</label>
+        <div class="toggle-group" id="taxType">
+            <div class="toggle-btn active" onclick="setTaxType('33')">사업소득 (3.3%)</div>
+            <div class="toggle-btn" onclick="setTaxType('88')">기타소득 (8.8%)</div>
+        </div>
+        <p class="help-text">일반적인 프리랜서, 알바는 3.3%를 뗍니다. 일회성 강연/원고료 등은 8.8%입니다.</p>
+    </div>
+
+    <div class="input-group">
+        <label>계약 방식</label>
+        <div class="toggle-group" id="calcMode">
+            <div class="toggle-btn active" onclick="setMode('pre')">세전 금액 기준</div>
+            <div class="toggle-btn" onclick="setMode('post')">세후 실수령액 기준</div>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label id="amtLabel">계약 금액 (세전)</label>
+        <div class="input-wrapper">
+            <input type="number" id="amtInput" placeholder="예: 1000000" onkeyup="formatDisplay(this)">
+        </div>
+        <p class="help-text" id="amtDisplay" style="color:var(--primary); font-weight:bold;"></p>
+    </div>
+
+    <button class="btn-calc" onclick="calculateAll()">💸 결과 확인하기</button>
+
+    <!-- 결과 화면 상단 광고 (8317907430) -->
+    <div class="ad-box" id="result-ad-box" style="display:none;">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2228289204702106" data-ad-slot="8317907430" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <!-- 결과 박스 -->
+    <div class="result-box" id="resultBox">
+        <div class="res-header">
+            <h2>✨ 계산 결과</h2>
+        </div>
+        <div class="res-row">
+            <span class="res-label">원래 계약 금액 (세전)</span>
+            <span class="res-val" id="resGross">0원</span>
+        </div>
+        <div class="res-row">
+            <span class="res-label">국세 (소득세)</span>
+            <span class="res-val" id="resNatTax" style="color:var(--highlight);">- 0원</span>
+        </div>
+        <div class="res-row">
+            <span class="res-label">지방세 (주민세)</span>
+            <span class="res-val" id="resLocTax" style="color:var(--highlight);">- 0원</span>
+        </div>
+        <div class="res-row">
+            <span class="res-label">총 공제 세금</span>
+            <span class="res-val" id="resTotalTax" style="color:var(--highlight); font-weight:bold;">- 0원</span>
+        </div>
+        
+        <div class="res-row" style="background:#E8EAF6; padding:15px; border-radius:10px; margin-top:10px; border-bottom:none;">
+            <span class="res-label" style="color:#1A237E; font-weight:bold;" id="finalLabel">내 통장에 찍히는 실수령액</span>
+            <span class="res-val val-highlight" id="resNet" style="color:#1A237E;">0원</span>
+        </div>
+
+        <div class="alert-box">
+            <strong>💡 종합소득세 환급 팁</strong><br>
+            여기서 떼인 3.3% 또는 8.8% 세금은 매년 5월 종합소득세 신고 시 <strong>전액 또는 일부를 환급</strong>받을 수 있습니다. 환급 가이드를 꼭 확인하세요!
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-share" onclick="shareKakao()">카카오톡 결과 공유</button>
+            <button class="btn-reset" onclick="resetForm()">다시 계산</button>
+        </div>
+    </div>
+
+    <!-- 가이드 섹션 -->
+    <div class="guides-section" id="guidesSection">
+        <h3>📘 프리랜서 필수 세금 가이드</h3>
+        <div class="guide-cards">
+            <a href="guides/tax-refund.html" class="g-card">
+                <div class="g-card-icon">💵</div>
+                <div class="g-card-text">
+                    <h4>떼인 세금 3.3% 100% 환급받는 법</h4>
+                    <p>숨은 내 돈, 삼쩜삼 없이 직접 돌려받기</p>
+                </div>
+            </a>
+            <a href="guides/33-vs-88.html" class="g-card">
+                <div class="g-card-icon">⚖️</div>
+                <div class="g-card-text">
+                    <h4>사업소득 3.3% vs 기타소득 8.8% 차이</h4>
+                    <p>나한테 유리한 세금 신고 방식은?</p>
+                </div>
+            </a>
+            <a href="guides/comprehensive-tax.html" class="g-card">
+                <div class="g-card-icon">📝</div>
+                <div class="g-card-text">
+                    <h4>5월 종합소득세 신고 핵심 절세 팁</h4>
+                    <p>비용 처리로 세금 폭탄 피하는 방법</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- 하단 광고 (5228759992) -->
+    <div class="ad-box" style="margin-top: 40px;">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2228289204702106" data-ad-slot="5228759992" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+</div>
+
+<!-- Sticky 광고 (2602596658 - horizontal 강제 적용) -->
+<div class="sticky-ad">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
+    <ins class="adsbygoogle" style="display:block;width:100%;height:60px;" data-ad-client="ca-pub-2228289204702106" data-ad-slot="2602596658" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<script>
+    let currentTax = '33'; // '33' or '88'
+    let currentMode = 'pre'; // 'pre' or 'post'
+
+    function setTaxType(type) {
+        currentTax = type;
+        const btns = document.getElementById('taxType').children;
+        btns[0].classList.toggle('active', type === '33');
+        btns[1].classList.toggle('active', type === '88');
+    }
+
+    function setMode(mode) {
+        currentMode = mode;
+        const btns = document.getElementById('calcMode').children;
+        btns[0].classList.toggle('active', mode === 'pre');
+        btns[1].classList.toggle('active', mode === 'post');
+        document.getElementById('amtLabel').innerText = mode === 'pre' ? '계약 금액 (세전)' : '내 통장 실수령액 (세후)';
+    }
+
+    function formatDisplay(el) {
+        const val = parseInt(el.value);
+        const display = document.getElementById('amtDisplay');
+        if(isNaN(val) || val === 0) { display.innerText = ''; return; }
+        display.innerText = val.toLocaleString() + '원';
+    }
+
+    try { Kakao.init(KAKAO_APP_KEY); } catch(e) {}
+
+    function calculateAll() {
+        const inputAmt = parseInt(document.getElementById('amtInput').value) || 0;
+        if (inputAmt < 1) {
+            alert('금액을 올바르게 입력해주세요.');
+            return;
+        }
+
+        let gross = 0; // 세전
+        let net = 0;   // 세후
+        let rate = currentTax === '33' ? 0.033 : 0.088;
+        let rateNat = currentTax === '33' ? 0.03 : 0.08;
+        let rateLoc = currentTax === '33' ? 0.003 : 0.008;
+
+        if (currentMode === 'pre') {
+            gross = inputAmt;
+            net = Math.floor(gross * (1 - rate));
+        } else {
+            net = inputAmt;
+            gross = Math.floor(net / (1 - rate));
+        }
+
+        const natTax = Math.floor(gross * rateNat);
+        const locTax = Math.floor(gross * rateLoc);
+        const totalTax = natTax + locTax;
+
+        document.getElementById('resGross').innerText = gross.toLocaleString() + '원';
+        document.getElementById('resNatTax').innerText = '- ' + natTax.toLocaleString() + '원';
+        document.getElementById('resLocTax').innerText = '- ' + locTax.toLocaleString() + '원';
+        document.getElementById('resTotalTax').innerText = '- ' + totalTax.toLocaleString() + '원';
+        
+        document.getElementById('finalLabel').innerText = currentMode === 'pre' ? '내 통장에 찍히는 실수령액' : '역산된 세전 계약 금액';
+        document.getElementById('resNet').innerText = (currentMode === 'pre' ? net : gross).toLocaleString() + '원';
+
+        document.getElementById('resultBox').classList.add('active');
+        document.getElementById('result-ad-box').style.display = 'block';
+        document.getElementById('guidesSection').style.display = 'block';
+        
+        setTimeout(() => { document.getElementById('resultBox').scrollIntoView({behavior: 'smooth', block: 'center'}); }, 100);
+    }
+
+    function shareKakao() {
+        const net = document.getElementById('resNet').innerText;
+        Kakao.Share.sendDefault({
+            objectType: 'text',
+            text: `[프리랜서 세금 계산기]\n이번 달 알바비/외주비 떼인 세금과 실수령액은?\n👉 결과: ${net}`,
+            link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
+            buttonTitle: '내 실수령액 직접 계산하기'
+        });
+    }
+
+    function resetForm() {
+        document.getElementById('resultBox').classList.remove('active');
+        document.getElementById('result-ad-box').style.display = 'none';
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+</script>
+</body>
+</html>

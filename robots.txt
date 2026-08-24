@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tax-33.enjoy-onepage.com/sitemap.xml
