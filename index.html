@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -29,9 +29,7 @@
       "operatingSystem": "All"
     }
     </script>
-    
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js" integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0W/3Ith/aP28h2XznbnQhTtcW76S6Gv2Z/E3Q" crossorigin="anonymous"></script>
-    <script>const KAKAO_APP_KEY = '06a673cad6aa6c08aa453b311cea75da';</script>
+
 
     <style>
         :root {
@@ -120,7 +118,7 @@
 
         .action-btns { display: flex; gap: 10px; margin-top: 20px; }
         .action-btns button { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
-        .btn-share { background: #FEE500; color: #000; }
+        .btn-share { background: var(--primary); color: #fff; }
         .btn-reset { background: var(--bg); color: var(--light); border: 1px solid var(--border); }
 
         .guides-section { display: none; margin-top: 30px; }
@@ -209,7 +207,8 @@
         </div>
 
         <div class="action-btns">
-            <button class="btn-share" onclick="shareKakao()">카카오톡 결과 공유</button>
+            <button class="btn-share" onclick="shareResult()">결과 공유하기</button>
+            <button class="btn-reset" onclick="copyResult()">링크 복사</button>
             <button class="btn-reset" onclick="resetForm()">다시 계산</button>
         </div>
     </div>
@@ -249,6 +248,15 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+    <footer style="margin-top: 40px; padding: 25px 0; border-top: 1px solid var(--border); text-align: center; font-size: 0.82rem; color: #888; line-height: 1.6;">
+        <p style="margin: 0 0 6px;">프리랜서, N잡러, 아르바이트생을 위한 3.3% / 8.8% 세금 및 실수령액 무료 계산기입니다.</p>
+        <p style="margin: 0;">
+            <a href="privacy.html" style="color: #666; text-decoration: underline; font-weight: bold;">개인정보처리방침</a> &nbsp;|&nbsp; 
+            <a href="guides/tax-refund.html" style="color: #666; text-decoration: underline;">3.3% 환급 가이드</a> &nbsp;|&nbsp;
+            <a href="guides/33-vs-88.html" style="color: #666; text-decoration: underline;">사업소득 vs 기타소득</a>
+        </p>
+    </footer>
+
 </div>
 
 
@@ -279,7 +287,6 @@
         display.innerText = val.toLocaleString() + '원';
     }
 
-    try { Kakao.init(KAKAO_APP_KEY); } catch(e) {}
 
     function calculateAll() {
         const inputAmt = parseInt(document.getElementById('amtInput').value) || 0;
@@ -321,14 +328,33 @@
         setTimeout(() => { document.getElementById('resultBox').scrollIntoView({behavior: 'smooth', block: 'center'}); }, 100);
     }
 
-    function shareKakao() {
-        const net = document.getElementById('resNet').innerText;
-        Kakao.Share.sendDefault({
-            objectType: 'text',
-            text: `[프리랜서 세금 계산기]\n이번 달 알바비/외주비 떼인 세금과 실수령액은?\n👉 결과: ${net}`,
-            link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
-            buttonTitle: '내 실수령액 직접 계산하기'
+    function copyResult() {
+        const net = document.getElementById('resNet') ? document.getElementById('resNet').innerText : '';
+        const url = window.location.href;
+        const text = `[프리랜서 세금 계산기]\n예상 실수령액: ${net}\n내 실수령액 직접 계산하기:\n${url}`;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('계산 결과 링크가 복사되었습니다!');
+        }).catch(() => {
+            alert('복사에 실패했습니다. 브라우저 주소창의 링크를 복사해주세요.');
         });
+    }
+
+    async function shareResult() {
+        const net = document.getElementById('resNet') ? document.getElementById('resNet').innerText : '';
+        const url = window.location.href;
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: '프리랜서 3.3% 세금/실수령액 계산기',
+                    text: `[프리랜서 세금 계산기]\n내 통장에 꽂히는 실수령액: ${net}`,
+                    url: url
+                });
+            } catch (err) {
+                if (err.name !== 'AbortError') copyResult();
+            }
+        } else {
+            copyResult();
+        }
     }
 
     function resetForm() {
