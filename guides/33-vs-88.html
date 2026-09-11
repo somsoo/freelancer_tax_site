@@ -1,68 +1,217 @@
-﻿<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="robots" content="index, follow">
-    <title>프리랜서 세금 3.3% vs 8.8% 차이점 완벽 정리</title>
-    <meta name="description" content="외주 작업, 강연, 알바 등 소득 종류에 따라 달라지는 3.3% 사업소득과 8.8% 기타소득의 차이점 및 세금 절세 방법을 알려드립니다.">
-    <link rel="canonical" href="https://tax-33.enjoy-onepage.com/guides/33-vs-88.html">
-    <link rel="icon" href="../favicon.ico">
-    <meta property="og:title" content="3.3% vs 8.8% 세금 차이 완벽 정리">
-    <meta property="og:description" content="나에게 유리한 세금 신고 방식은 무엇일까요?">
-    <style>
-        :root{--primary:#3F51B5;--primary-light:#E8EAF6;--bg:#F4F7F6;--text:#2C3E50;--light:#7F8C8D;--border:#C5CAE9;--box:#FFFFFF;--highlight:#FF4081;}
-        *{box-sizing:border-box;}
-        body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:0;}
-        .container{margin:0 auto;max-width:500px;width:100%;min-height:100vh;background:var(--box);padding:20px;box-shadow:0 0 20px rgba(63,81,181,.08);}
-        .nav-btn{display:inline-block;padding:7px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:0.82rem;font-weight:bold;margin-bottom:14px;}
-        h1{font-size:1.35rem;margin:0 0 16px;line-height:1.35;}
-        h2{font-size:1.1rem;margin:26px 0 10px;color:var(--primary);}
-        p{font-size:0.92rem;line-height:1.7;margin:0 0 12px;}
-        .highlight-box{background:var(--primary-light);border-left:4px solid var(--primary);padding:14px;border-radius:0 10px 10px 0;margin:14px 0;font-size:0.9rem;}
-        .ad-box{width:100%;min-height:90px;margin:20px 0;background:var(--box);text-align:center;border-radius:12px;overflow:hidden;}
-        
-        .cta-btn{display:block;padding:15px;background:var(--primary);color:#fff;border-radius:12px;font-size:1rem;font-weight:bold;text-align:center;text-decoration:none;margin:20px 0 10px;}
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.3 원천징수 계산법 프리랜서 사업소득 기준</title>
+  <meta name="description" content="용역비 받을 때 떼이는 3.3%의 비밀! 사업소득세 3%와 지방소득세 0.3% 공제액 정확한 계산법." />
+  <meta name="keywords" content="3.3 원천징수 계산법, 프리랜서 사업소득, 3.3 세금, 원천징수영수증" />
+  <meta name="theme-color" content="#10b981" />
+  <link rel="icon" href="../favicon.ico">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --primary: #10b981;
+      --dark: #065f46;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding-bottom: 60px;
+    }
+    .nav-bar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .nav-bar a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 30px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+    .guide-hero-img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      display: block;
+      border: 1px solid var(--border);
+    }
+    h1 {
+      font-size: 1.65rem;
+      color: var(--dark);
+      margin-bottom: 16px;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+    }
+    .meta-tag {
+      display: inline-block;
+      background: #f1f5f9;
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .guide-section {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #f1f5f9;
+    }
+    .guide-section h2 {
+      font-size: 1.3rem;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+    .guide-section p {
+      color: #334155;
+      font-size: 1.02rem;
+      margin-bottom: 14px;
+      word-break: keep-all;
+    }
+    .callout {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 16px 18px;
+      border-radius: 6px;
+      margin: 18px 0;
+      font-size: 0.95rem;
+      color: #334155;
+    }
+    .callout strong { color: var(--dark); }
+    .faq-item {
+      background: #f8fafc;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+    .faq-item h3 {
+      font-size: 1.05rem;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .faq-item p {
+      font-size: 0.95rem;
+      color: #475569;
+    }
+    .ad-wrap {
+      margin: 30px 0;
+      min-height: 100px;
+      background: #f8fafc;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .home-btn {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 30px;
+      font-size: 1.05rem;
+    }
+    .home-btn:hover { opacity: 0.95; }
+  </style>
 </head>
 <body>
-<div class="container">
-    <a href="../index.html" class="nav-btn">← 💰 계산기로 돌아가기</a>
-    <h1>⚖️ 사업소득 3.3% vs 기타소득 8.8% 차이점</h1>
-    <p>투잡이나 프리랜서 활동으로 소득이 생겼을 때, 어떤 경우에는 3.3%를 떼고 어떤 경우에는 8.8%를 뗍니다. 이 두 가지 세금의 차이는 <strong>'계속성'</strong>에 있습니다.</p>
+  <div class="nav-bar">
+    <a href="../index.html">← 프리랜서 세금 계산기 바로가기</a>
+    <span style="font-size:0.85rem; color:#94a3b8;">실무 가이드</span>
+  </div>
+  
+  <div class="container">
+    <img src="../images/guide1.webp" alt="3.3% 원천징수 사업소득세 및 지방소득세 계산 공식" class="guide-hero-img" loading="lazy" />
+    <span class="meta-tag">검증된 실무 정보 · 2026 최신 개정판</span>
+    <h1>3.3% 원천징수 계산법: 사업소득세 공제 원리와 실수령액 산출</h1>
     
-    <div class="highlight-box">
-        💡 <strong>핵심 요약</strong><br>
-        • 계속적/반복적 소득 = <strong>사업소득 (3.3%)</strong><br>
-        • 일시적/우발적 소득 = <strong>기타소득 (8.8%)</strong>
+    <!-- Ad Slot Middle -->
+    <div class="ad-wrap">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-2228289204702106"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <!-- 광고 1 -->
-    <div class="ad-box">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2228289204702106" data-ad-slot="8317907430" data-ad-format="auto" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <h2>1. 사업소득 (3.3%)</h2>
-    <p>배달 대행, 학원 강사, 정기적인 외주 작업 등 독립적인 자격으로 <strong>반복적으로 용역을 제공</strong>할 때 발생합니다. 계약 금액의 3%가 국세(소득세), 0.3%가 지방세로 공제됩니다. 종합소득세 신고 의무가 있습니다.</p>
-
-    <h2>2. 기타소득 (8.8%)</h2>
-    <p>어쩌다 한 번 나간 특강 강연료, 1회성 자문료, 이벤트 당첨금 등이 여기에 속합니다. 원천징수 세율 자체는 22%지만, 강연료 등은 필요경비를 60% 인정해주기 때문에 실질적으로 <strong>8.8%</strong>만 공제하게 됩니다.</p>
-
-    <!-- 광고 2 -->
-    <div class="ad-box">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2228289204702106" data-ad-slot="5228759992" data-ad-format="auto" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <h2>⚠️ 어떤 것이 유리할까요?</h2>
-    <p>기타소득이 당장 떼는 세금(8.8%)은 많아 보이지만, 종합소득세 신고 시 '필요경비 60% 인정'이라는 엄청난 혜택 덕분에 환급받을 확률이 훨씬 높습니다. 반면 사업소득은 본인이 직접 비용 처리를 증빙해야 합니다.</p>
     
-    <a href="../index.html" class="cta-btn">💰 내 실수령액 계산해보기</a>
-</div>
+        <section class="guide-section">
+            <h2>3.3% 원천징수의 법적 성격과 구성 항목</h2>
+            <p>프리랜서가 기업으로부터 대가를 지급받을 때 떼이는 3.3%는 소득세법 제127조에 따른 '사업소득 원천징수세율 3%'와 지방세법에 따른 '지방소득세 0.3%(소득세의 10%)'가 합산된 금액입니다. 이는 확정 세금이 아니라 5월에 정산할 세금을 미리 예납하는 성격입니다.</p>
+            <div class='callout'><strong>공식:</strong> 원천징수세액 = 지급총액 × 3.3% (원 단위 절사). 예: 100만 원 지급 시 33,000원 공제 후 967,000원 입금.</div>
+        </section>
+        
+        <section class="guide-section">
+            <h2>근로소득(4대보험) vs 사업소득(3.3%)의 결정적 차이</h2>
+            <p>근로소득자는 퇴직금, 주휴수당, 연차수당을 보장받고 4대보험을 회사와 반반 부담하지만, 3.3% 프리랜서는 독립 사업자 신분이므로 근로기준법 보호를 받지 못하며 건강보험과 국민연금을 전액 지역가입자로 부담해야 합니다.</p>
+            
+        </section>
+        
 
+    <div class="guide-section">
+      <h2>자주 묻는 질문 (FAQ)</h2>
+      
+        <div class="faq-item">
+            <h3>Q. 아르바이트인데 3.3%를 떼면 불법인가요?</h3>
+            <p>A. 정해진 출퇴근 시간과 지휘 감독을 받는 실질적 근로자라면 근로계약 체결 및 4대보험 가입이 원칙이며, 3.3% 사업소득 처리는 사업주의 4대보험 회피 수단일 수 있습니다.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>Q. 원천징수영수증은 언제 발급받나요?</h3>
+            <p>A. 지급처는 다음 해 2월 말까지 국세청 홈택스에 지급명세서를 제출해야 하며, 프리랜서는 홈택스 'My홈택스 > 지급명세서 등 제출내역'에서 언제든 조회할 수 있습니다.</p>
+        </div>
+        
+    </div>
+
+    <!-- Ad Slot Bottom -->
+    <div class="ad-wrap">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-2228289204702106"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <a href="../index.html" class="home-btn">프리랜서 세금 계산기 계산기 이용하기</a>
+  </div>
 </body>
 </html>
-
