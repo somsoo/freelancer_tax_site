@@ -55,12 +55,37 @@
         }
         .container {
             margin: 0 auto;
-            max-width: 500px;
+            max-width: 960px;
             width: 100%;
             min-height: 100vh;
             background: var(--box);
             padding: 20px 20px 40px;
             box-shadow: 0 0 20px rgba(63, 81, 181, 0.08);
+        }
+        .tax-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        @media (min-width: 768px) {
+            .tax-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+                align-items: start;
+            }
+            .tax-left {
+                background: #FAFAFC;
+                padding: 20px;
+                border-radius: 16px;
+                border: 1px solid var(--border);
+            }
+            .tax-right {
+                min-width: 0;
+            }
+            .result-box {
+                margin-top: 0 !important;
+            }
         }
 
         .header { text-align: center; margin-bottom: 25px; padding-top: 10px; }
@@ -140,85 +165,98 @@
         <p>알바, N잡, 프리랜서 소득 공제 후<br>내 통장에 꽂히는 진짜 금액은 얼마일까?</p>
     </div>
 
-    <!-- 폼 -->
-    <div class="input-group">
-        <label>소득 종류 선택</label>
-        <div class="toggle-group" id="taxType">
-            <div class="toggle-btn active" onclick="setTaxType('33')">사업소득 (3.3%)</div>
-            <div class="toggle-btn" onclick="setTaxType('88')">기타소득 (8.8%)</div>
+    <div class="tax-grid">
+        <!-- Left Column: Input Form -->
+        <div class="tax-left">
+            <h3 style="margin-top:0; margin-bottom:15px; font-size:1.1rem; color:var(--primary);">💼 소득 및 계약 정보</h3>
+            <div class="input-group">
+                <label>소득 종류 선택</label>
+                <div class="toggle-group" id="taxType">
+                    <div class="toggle-btn active" onclick="setTaxType('33')">사업소득 (3.3%)</div>
+                    <div class="toggle-btn" onclick="setTaxType('88')">기타소득 (8.8%)</div>
+                </div>
+                <p class="help-text">일반 프리랜서/알바는 3.3%, 일회성 강연/원고료는 8.8%입니다.</p>
+            </div>
+
+            <div class="input-group">
+                <label>계약 방식</label>
+                <div class="toggle-group" id="calcMode">
+                    <div class="toggle-btn active" onclick="setMode('pre')">세전 금액 기준</div>
+                    <div class="toggle-btn" onclick="setMode('post')">세후 실수령액 기준</div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label id="amtLabel">계약 금액 (세전)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="amtInput" placeholder="예: 1000000" onkeyup="formatDisplay(this)">
+                </div>
+                <p class="help-text" id="amtDisplay" style="color:var(--primary); font-weight:bold;"></p>
+            </div>
+
+            <button class="btn-calc" onclick="calculateAll()">💸 결과 확인하기</button>
         </div>
-        <p class="help-text">일반적인 프리랜서, 알바는 3.3%를 뗍니다. 일회성 강연/원고료 등은 8.8%입니다.</p>
+
+        <!-- Right Column: Results & Initial Prompt -->
+        <div class="tax-right">
+            <div class="result-box" id="resultBox">
+                <div class="res-header">
+                    <h2>✨ 실수령액 계산 결과</h2>
+                </div>
+                <div class="res-row">
+                    <span class="res-label">원래 계약 금액 (세전)</span>
+                    <span class="res-val" id="resGross">0원</span>
+                </div>
+                <div class="res-row">
+                    <span class="res-label">국세 (소득세)</span>
+                    <span class="res-val" id="resNatTax" style="color:var(--highlight);">- 0원</span>
+                </div>
+                <div class="res-row">
+                    <span class="res-label">지방세 (주민세)</span>
+                    <span class="res-val" id="resLocTax" style="color:var(--highlight);">- 0원</span>
+                </div>
+                <div class="res-row">
+                    <span class="res-label">총 공제 세금</span>
+                    <span class="res-val" id="resTotalTax" style="color:var(--highlight); font-weight:bold;">- 0원</span>
+                </div>
+                
+                <div class="res-row" style="background:#E8EAF6; padding:15px; border-radius:10px; margin-top:10px; border-bottom:none;">
+                    <span class="res-label" style="color:#1A237E; font-weight:bold;" id="finalLabel">내 통장에 찍히는 실수령액</span>
+                    <span class="res-val val-highlight" id="resNet" style="color:#1A237E;">0원</span>
+                </div>
+
+                <div class="alert-box">
+                    <strong>💡 종합소득세 환급 팁</strong><br>
+                    여기서 떼인 3.3% 또는 8.8% 세금은 매년 5월 종합소득세 신고 시 <strong>전액 또는 일부를 환급</strong>받을 수 있습니다.
+                </div>
+
+                <div class="action-btns">
+                    <button class="btn-share" onclick="shareResult()">결과 공유하기</button>
+                    <button class="btn-reset" onclick="copyResult()">링크 복사</button>
+                    <button class="btn-reset" onclick="resetForm()">다시 계산</button>
+                </div>
+            </div>
+
+            <div id="initialTaxPrompt" style="background:#F9FAFB; border:1px dashed #D1D5DB; border-radius:16px; padding:30px 20px; text-align:center; color:#6B7280;">
+                <div style="font-size:2.5rem; margin-bottom:10px;">💵</div>
+                <h4 style="margin:0 0 6px; color:#374151; font-size:1.05rem;">금액을 입력하고 버튼을 눌러주세요</h4>
+                <p style="margin:0; font-size:0.85rem; line-height:1.5;">3.3% 사업소득세와 지방세 공제 후<br>내 통장에 실제 입금될 금액을 즉시 계산합니다.</p>
+            </div>
+        </div>
     </div>
 
-    <div class="input-group">
-        <label>계약 방식</label>
-        <div class="toggle-group" id="calcMode">
-            <div class="toggle-btn active" onclick="setMode('pre')">세전 금액 기준</div>
-            <div class="toggle-btn" onclick="setMode('post')">세후 실수령액 기준</div>
-        </div>
-    </div>
-
-    <div class="input-group">
-        <label id="amtLabel">계약 금액 (세전)</label>
-        <div class="input-wrapper">
-            <input type="number" id="amtInput" placeholder="예: 1000000" onkeyup="formatDisplay(this)">
-        </div>
-        <p class="help-text" id="amtDisplay" style="color:var(--primary); font-weight:bold;"></p>
-    </div>
-
-    <button class="btn-calc" onclick="calculateAll()">💸 결과 확인하기</button>
-
-    <!-- 결과 화면 상단 광고 (8317907430) -->
-    <div class="manual-ad-box" style="width: 100%; margin: 20px 0; overflow: hidden; text-align: center;">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2228289204702106"
-         data-ad-slot="3416334507"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-</div>
-
-    <!-- 결과 박스 -->
-    <div class="result-box" id="resultBox">
-        <div class="res-header">
-            <h2>✨ 계산 결과</h2>
-        </div>
-        <div class="res-row">
-            <span class="res-label">원래 계약 금액 (세전)</span>
-            <span class="res-val" id="resGross">0원</span>
-        </div>
-        <div class="res-row">
-            <span class="res-label">국세 (소득세)</span>
-            <span class="res-val" id="resNatTax" style="color:var(--highlight);">- 0원</span>
-        </div>
-        <div class="res-row">
-            <span class="res-label">지방세 (주민세)</span>
-            <span class="res-val" id="resLocTax" style="color:var(--highlight);">- 0원</span>
-        </div>
-        <div class="res-row">
-            <span class="res-label">총 공제 세금</span>
-            <span class="res-val" id="resTotalTax" style="color:var(--highlight); font-weight:bold;">- 0원</span>
-        </div>
-        
-        <div class="res-row" style="background:#E8EAF6; padding:15px; border-radius:10px; margin-top:10px; border-bottom:none;">
-            <span class="res-label" style="color:#1A237E; font-weight:bold;" id="finalLabel">내 통장에 찍히는 실수령액</span>
-            <span class="res-val val-highlight" id="resNet" style="color:#1A237E;">0원</span>
-        </div>
-
-        <div class="alert-box">
-            <strong>💡 종합소득세 환급 팁</strong><br>
-            여기서 떼인 3.3% 또는 8.8% 세금은 매년 5월 종합소득세 신고 시 <strong>전액 또는 일부를 환급</strong>받을 수 있습니다. 환급 가이드를 꼭 확인하세요!
-        </div>
-
-        <div class="action-btns">
-            <button class="btn-share" onclick="shareResult()">결과 공유하기</button>
-            <button class="btn-reset" onclick="copyResult()">링크 복사</button>
-            <button class="btn-reset" onclick="resetForm()">다시 계산</button>
-        </div>
+    <!-- 결과 화면 직하단 안전 광고 -->
+    <div class="manual-ad-box" style="width: 100%; margin: 30px 0; overflow: hidden; text-align: center;">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2228289204702106"
+             data-ad-slot="3824727725"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
 
     <!-- 가이드 섹션 -->
@@ -330,6 +368,7 @@
         document.getElementById('resNet').innerText = (currentMode === 'pre' ? net : gross).toLocaleString() + '원';
 
         document.getElementById('resultBox').classList.add('active');
+    const ip = document.getElementById('initialTaxPrompt'); if(ip) ip.style.display='none';
         document.getElementById('result-ad-box').style.display = 'block';
         document.getElementById('guidesSection').style.display = 'block';
         
@@ -367,6 +406,7 @@
 
     function resetForm() {
         document.getElementById('resultBox').classList.remove('active');
+    const ip = document.getElementById('initialTaxPrompt'); if(ip) ip.style.display='block';
         document.getElementById('result-ad-box').style.display = 'none';
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
