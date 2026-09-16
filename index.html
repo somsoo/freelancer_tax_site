@@ -2,6 +2,11 @@
 
 <html lang="ko">
 <head>
+    <!-- Performance Optimization: Resource Preconnect -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
 <link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
 <meta content="index, follow" name="robots"/>
@@ -194,6 +199,17 @@
         .g-card-icon { font-size: 1.5rem; }
         .g-card-text h4 { margin: 0 0 4px; font-size: 0.95rem; }
         .g-card-text p { margin: 0; font-size: 0.75rem; color: var(--light); }
+    
+        /* U3 Accessibility: Global Keyboard Focus Ring Standard */
+        :focus-visible {
+            outline: 2px solid #3b82f6 !important;
+            outline-offset: 2px !important;
+        }
+        input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
+            outline: 2px solid #2563eb !important;
+            outline-offset: 1px !important;
+        }
+    
     </style>
 <link href="https://tax-33.enjoy-onepage.com/rss.xml" rel="alternate" title="프리랜서 3.3% 세금 및 실수령액 계산기 RSS Feed" type="application/rss+xml"/>
 <link href="https://tax-33.enjoy-onepage.com/sitemap.xml" rel="sitemap" title="Sitemap" type="application/xml"/>
@@ -251,7 +267,7 @@
 <div class="input-group">
 <label id="amtLabel">계약 금액 (세전)</label>
 <div class="input-wrapper">
-<input id="amtInput" onkeyup="formatDisplay(this)" placeholder="예: 1000000" type="number"/>
+<input id="amtInput" onkeyup="formatDisplay(this)" placeholder="예: 1000000" type="number" aria-label="예: 1000000" />
 </div>
 <p class="help-text" id="amtDisplay" style="color:var(--primary); font-weight:bold;"></p>
 </div>
