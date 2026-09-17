@@ -231,7 +231,17 @@
     overflow: hidden !important;
   }
 </style>
-<meta content="summary_large_image" name="twitter:card"/><meta content="프리랜서 3.3% 세금 계산기" name="twitter:title"/><meta content="프리랜서 알바 세금 떼고 내 통장에 얼마 들어올까? 서버 전송 없는 100% 무료 안전 브라우저 로컬 연산." name="twitter:description"/><meta content="https://tax-33.enjoy-onepage.com/og-image.png" name="twitter:image"/></head>
+<meta content="summary_large_image" name="twitter:card"/><meta content="프리랜서 3.3% 세금 계산기" name="twitter:title"/><meta content="프리랜서 알바 세금 떼고 내 통장에 얼마 들어올까? 서버 전송 없는 100% 무료 안전 브라우저 로컬 연산." name="twitter:description"/><meta content="https://tax-33.enjoy-onepage.com/og-image.png" name="twitter:image"/><style id="mobile-hardening-shield">
+  @media (max-width: 640px) {
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+    button, [role="button"], a.btn {
+      min-height: 42px;
+    }
+  }
+</style>
+</head>
 <body>
 <!-- 상단 슬림 띠배너 (헤더 직하단: 50~60px 슬림형) -->
 <div class="manual-ad-box ad-top-banner" style="width: 100%; max-width: 960px; margin: 8px auto 16px; text-align: center;">
@@ -267,7 +277,7 @@
 <div class="input-group">
 <label id="amtLabel">계약 금액 (세전)</label>
 <div class="input-wrapper">
-<input id="amtInput" onkeyup="formatDisplay(this)" placeholder="예: 1000000" type="number" aria-label="예: 1000000" />
+<input id="amtInput" onkeyup="formatDisplay(this)" placeholder="예: 1000000" type="number" min="0" aria-label="예: 1000000" />
 </div>
 <p class="help-text" id="amtDisplay" style="color:var(--primary); font-weight:bold;"></p>
 </div>
