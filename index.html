@@ -577,7 +577,6 @@
 
         document.getElementById('resultBox').classList.add('active');
         const ip = document.getElementById('initialTaxPrompt'); if(ip) ip.style.display='none';
-        const rad = document.getElementById('result-ad-box'); if(rad) rad.style.display = 'block';
         const gs = document.getElementById('guidesSection'); if(gs) gs.style.display = 'block';
         
         setTimeout(() => { 
@@ -618,7 +617,6 @@
     function resetForm() {
         document.getElementById('resultBox').classList.remove('active');
         const ip = document.getElementById('initialTaxPrompt'); if(ip) ip.style.display='block';
-        const rad = document.getElementById('result-ad-box'); if(rad) rad.style.display = 'none';
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 </script>
