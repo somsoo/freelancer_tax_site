@@ -264,23 +264,23 @@
 <h1>프리랜서 세금/실수령액 계산기</h1>
 <p>알바, N잡, 프리랜서 소득 공제 후<br/>내 통장에 꽂히는 진짜 금액은 얼마일까?</p>
 </div>
-<div class="tax-grid">
+<div class="tax-grid grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 <!-- Left Column: Input Form -->
-<div class="tax-left">
+<div class="tax-left lg:col-span-6 w-full">
 <h3 style="margin-top:0; margin-bottom:15px; font-size:1.1rem; color:var(--primary);">💼 소득 및 계약 정보</h3>
 <div class="input-group">
 <label>소득 종류 선택</label>
 <div class="toggle-group" id="taxType">
-<div class="toggle-btn active" onclick="setTaxType('33')">사업소득 (3.3%)</div>
-<div class="toggle-btn" onclick="setTaxType('88')">기타소득 (8.8%)</div>
+<div class="toggle-btn active py-3 min-h-[44px]" onclick="setTaxType('33')">사업소득 (3.3%)</div>
+<div class="toggle-btn py-3 min-h-[44px]" onclick="setTaxType('88')">기타소득 (8.8%)</div>
 </div>
 <p class="help-text">일반 프리랜서/알바는 3.3%, 일회성 강연/원고료는 8.8%입니다.</p>
 </div>
 <div class="input-group">
 <label>계약 방식</label>
 <div class="toggle-group" id="calcMode">
-<div class="toggle-btn active" onclick="setMode('pre')">세전 금액 기준</div>
-<div class="toggle-btn" onclick="setMode('post')">세후 실수령액 기준</div>
+<div class="toggle-btn active py-3 min-h-[44px]" onclick="setMode('pre')">세전 금액 기준</div>
+<div class="toggle-btn py-3 min-h-[44px]" onclick="setMode('post')">세후 실수령액 기준</div>
 </div>
 </div>
 <div class="input-group">
@@ -290,10 +290,10 @@
 </div>
 <p class="help-text" id="amtDisplay" style="color:var(--primary); font-weight:bold;"></p>
 </div>
-<button class="btn-calc whitespace-nowrap" onclick="calculateAll()">💸 결과 확인하기</button>
+<button class="btn-calc whitespace-nowrap py-3 min-h-[44px]" onclick="calculateAll()">💸 결과 확인하기</button>
 </div>
 <!-- Right Column: Results & Initial Prompt -->
-<div class="tax-right">
+<div class="tax-right lg:col-span-6 lg:sticky lg:top-8 w-full">
 <div class="result-box" id="resultBox">
 <div class="res-header">
 <h2>✨ 실수령액 계산 결과</h2>
@@ -322,10 +322,10 @@
 <strong>💡 종합소득세 환급 팁</strong><br/>
                     여기서 떼인 3.3% 또는 8.8% 세금은 매년 5월 종합소득세 신고 시 <strong>전액 또는 일부를 환급</strong>받을 수 있습니다.
                 </div>
-<div class="action-btns">
-<button class="btn-share whitespace-nowrap" onclick="shareResult()">결과 공유하기</button>
-<button class="btn-reset whitespace-nowrap" onclick="copyResult()">링크 복사</button>
-<button class="btn-reset whitespace-nowrap" onclick="resetForm()">다시 계산</button>
+<div class="action-btns py-3 min-h-[44px]">
+<button class="btn-share whitespace-nowrap py-3 min-h-[44px]" onclick="shareResult()">결과 공유하기</button>
+<button class="btn-reset whitespace-nowrap py-3 min-h-[44px]" onclick="copyResult()">링크 복사</button>
+<button class="btn-reset whitespace-nowrap py-3 min-h-[44px]" onclick="resetForm()">다시 계산</button>
 </div>
 </div>
 <div id="initialTaxPrompt" style="background:#F9FAFB; border:1px dashed #D1D5DB; border-radius:16px; padding:30px 20px; text-align:center; color:#6B7280;">
