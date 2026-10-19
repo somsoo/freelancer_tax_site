@@ -304,7 +304,14 @@
 <div class="input-group">
 <label id="amtLabel">계약 금액 (세전)</label>
 <div class="input-wrapper">
-<input id="amtInput" onkeyup="formatDisplay(this)" placeholder="예: 1000000" type="number" min="0" aria-label="예: 1000000" / inputmode="numeric">
+<input id="amtInput" placeholder="예: 1000000" type="number" min="0" inputmode="numeric" aria-label="계약 금액 입력">
+</div>
+<div class="quick-btns" style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;">
+  <button type="button" class="quick-btn" data-amt="100000" style="padding:4px 8px; font-size:12px; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:pointer;">+10만</button>
+  <button type="button" class="quick-btn" data-amt="500000" style="padding:4px 8px; font-size:12px; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:pointer;">+50만</button>
+  <button type="button" class="quick-btn" data-amt="1000000" style="padding:4px 8px; font-size:12px; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:pointer;">+100만</button>
+  <button type="button" class="quick-btn" data-amt="5000000" style="padding:4px 8px; font-size:12px; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:pointer;">+500만</button>
+  <button type="button" class="quick-btn-clear" style="padding:4px 8px; font-size:12px; border:1px solid #e2e8f0; border-radius:6px; background:#f8fafc; color:#64748b; cursor:pointer;">정정</button>
 </div>
 <p class="help-text" id="amtDisplay" style="color:var(--primary); font-weight:bold;"></p>
 </div>
@@ -501,61 +508,66 @@
         btns[0].classList.toggle('active', mode === 'pre');
         btns[1].classList.toggle('active', mode === 'post');
         document.getElementById('amtLabel').innerText = mode === 'pre' ? '계약 금액 (세전)' : '내 통장 실수령액 (세후)';
+        calculateAll(true);
     }
 
     function formatDisplay(el) {
-        const val = parseInt(el.value);
+        const val = Math.max(0, parseInt(el.value, 10) || 0);
         const display = document.getElementById('amtDisplay');
-        if(isNaN(val) || val === 0) { display.innerText = ''; return; }
-        display.innerText = val.toLocaleString() + '원';
+        if(val === 0) { display.textContent = ''; return; }
+        display.textContent = val.toLocaleString() + '원';
     }
 
+    function calculateAll(isSilent = false) {
+        const amtInput = document.getElementById('amtInput');
+        const inputAmt = Math.max(0, parseInt(amtInput.value, 10) || 0);
+        const resultBox = document.getElementById('resultBox');
+        const ip = document.getElementById('initialTaxPrompt');
+        const gs = document.getElementById('guidesSection');
 
-    function calculateAll() {
-        const inputAmt = parseInt(document.getElementById('amtInput').value) || 0;
         if (inputAmt < 1) {
-            alert('금액을 올바르게 입력해주세요.');
+            if (!isSilent) {
+                alert('계약 금액을 입력해주세요.');
+            }
+            if (resultBox) resultBox.classList.remove('active');
+            if (ip) ip.style.display = 'block';
             return;
         }
 
         let gross = 0; // 세전
         let net = 0;   // 세후
-        let rate = currentTax === '33' ? 0.033 : 0.088;
-        let rateNat = currentTax === '33' ? 0.03 : 0.08;
-        let rateLoc = currentTax === '33' ? 0.003 : 0.008;
+        const rate = currentTax === '33' ? 0.033 : 0.088;
+        const rateNat = currentTax === '33' ? 0.03 : 0.08;
+        const rateLoc = currentTax === '33' ? 0.003 : 0.008;
 
         if (currentMode === 'pre') {
             gross = inputAmt;
-            net = Math.floor(gross * (1 - rate));
+            net = Math.floor(gross * Math.max(0, 1 - rate));
         } else {
             net = inputAmt;
-            gross = Math.floor(net / (1 - rate));
+            const denom = Math.max(0.0001, 1 - rate);
+            gross = Math.floor(net / denom);
         }
 
         const natTax = Math.floor(gross * rateNat);
         const locTax = Math.floor(gross * rateLoc);
         const totalTax = natTax + locTax;
 
-        document.getElementById('resGross').innerText = gross.toLocaleString() + '원';
-        document.getElementById('resNatTax').innerText = '- ' + natTax.toLocaleString() + '원';
-        document.getElementById('resLocTax').innerText = '- ' + locTax.toLocaleString() + '원';
-        document.getElementById('resTotalTax').innerText = '- ' + totalTax.toLocaleString() + '원';
+        document.getElementById('resGross').textContent = gross.toLocaleString() + '원';
+        document.getElementById('resNatTax').textContent = '- ' + natTax.toLocaleString() + '원';
+        document.getElementById('resLocTax').textContent = '- ' + locTax.toLocaleString() + '원';
+        document.getElementById('resTotalTax').textContent = '- ' + totalTax.toLocaleString() + '원';
         
-        document.getElementById('finalLabel').innerText = currentMode === 'pre' ? '내 통장에 찍히는 실수령액' : '역산된 세전 계약 금액';
-        document.getElementById('resNet').innerText = (currentMode === 'pre' ? net : gross).toLocaleString() + '원';
+        document.getElementById('finalLabel').textContent = currentMode === 'pre' ? '내 통장에 찍히는 실수령액' : '역산된 세전 계약 금액';
+        document.getElementById('resNet').textContent = (currentMode === 'pre' ? net : gross).toLocaleString() + '원';
 
-        document.getElementById('resultBox').classList.add('active');
-        const ip = document.getElementById('initialTaxPrompt'); if(ip) ip.style.display='none';
-        const gs = document.getElementById('guidesSection'); if(gs) gs.style.display = 'block';
-        
-        setTimeout(() => { 
-            const rb = document.getElementById('resultBox');
-            if (rb) rb.scrollIntoView({behavior: 'smooth', block: 'center'}); 
-        }, 100);
+        if (resultBox) resultBox.classList.add('active');
+        if (ip) ip.style.display = 'none';
+        if (gs) gs.style.display = 'block';
     }
 
     function copyResult() {
-        const net = document.getElementById('resNet') ? document.getElementById('resNet').innerText : '';
+        const net = document.getElementById('resNet') ? document.getElementById('resNet').textContent : '';
         const url = window.location.href;
         const text = `[프리랜서 세금 계산기]\n예상 실수령액: ${net}\n내 실수령액 직접 계산하기:\n${url}`;
         navigator.clipboard.writeText(text).then(() => {
@@ -566,7 +578,7 @@
     }
 
     async function shareResult() {
-        const net = document.getElementById('resNet') ? document.getElementById('resNet').innerText : '';
+        const net = document.getElementById('resNet') ? document.getElementById('resNet').textContent : '';
         const url = window.location.href;
         if (navigator.share) {
             try {
@@ -584,10 +596,39 @@
     }
 
     function resetForm() {
+        document.getElementById('amtInput').value = '';
+        formatDisplay(document.getElementById('amtInput'));
         document.getElementById('resultBox').classList.remove('active');
         const ip = document.getElementById('initialTaxPrompt'); if(ip) ip.style.display='block';
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const amtInput = document.getElementById('amtInput');
+        if (amtInput) {
+            amtInput.addEventListener('input', function() {
+                formatDisplay(this);
+                calculateAll(true);
+            });
+        }
+        document.querySelectorAll('.quick-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const add = parseInt(this.dataset.amt, 10) || 0;
+                const curr = parseInt(amtInput.value, 10) || 0;
+                amtInput.value = curr + add;
+                formatDisplay(amtInput);
+                calculateAll(true);
+            });
+        });
+        const clearBtn = document.querySelector('.quick-btn-clear');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                amtInput.value = '';
+                formatDisplay(amtInput);
+                calculateAll(true);
+            });
+        }
+    });
 </script>
 <!-- Preemptive UX Helper: Auto comma formatting & Result sharing -->
 <script>
