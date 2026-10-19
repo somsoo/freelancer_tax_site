@@ -507,7 +507,7 @@
         const btns = document.getElementById('calcMode').children;
         btns[0].classList.toggle('active', mode === 'pre');
         btns[1].classList.toggle('active', mode === 'post');
-        document.getElementById('amtLabel').innerText = mode === 'pre' ? '계약 금액 (세전)' : '내 통장 실수령액 (세후)';
+        document.getElementById('amtLabel').textContent = mode === 'pre' ? '계약 금액 (세전)' : '내 통장 실수령액 (세후)';
         calculateAll(true);
     }
 
