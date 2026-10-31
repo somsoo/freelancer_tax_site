@@ -1,0 +1,19 @@
+{
+ "app": "freelancer_tax_site",
+ "host": "tax-33.enjoy-onepage.com",
+ "watch": false,
+ "status": "unverified",
+ "checked": "",
+ "soft_days": 60,
+ "hard_days": 120,
+ "grace_days": 31,
+ "hide": [],
+ "pages": [
+  "index.html",
+  "refund-3-3.html"
+ ],
+ "values": {},
+ "sources": {},
+ "valid_until": "2026-12-31",
+ "note": "이 페이지의 금액·비율은 2026년 기준"
+}
